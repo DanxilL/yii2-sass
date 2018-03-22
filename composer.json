@@ -11,7 +11,9 @@
         }
     ],
     "require": {
-        "yiisoft/yii2": "~2.0.0"
+        "yiisoft/yii2": "~2.0.0",
+        "leafo/scssphp": "*",
+        "artem-frolov/scssphp-compass": "0.1.*"
     },
     "autoload": {
         "psr-4": {
