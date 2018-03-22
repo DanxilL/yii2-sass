@@ -1,0 +1,21 @@
+{
+    "name": "danxill/yii2-sass",
+    "description": "compiles sass assets",
+    "type": "library",
+    "keywords": ["yii2","extension","sass"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Dmitriy Bulgar",
+            "email": "danxills@gmail.com"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "~2.0.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "danxill\\sass\\": ""
+        }
+    }
+}
