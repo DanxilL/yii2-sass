@@ -78,7 +78,15 @@ class SassHandler extends Component
      *
      * @var string
      */
-    public $sassCompiledPath = '@web/css-compiled';
+    public $sassCompiledPath = '@web/css';
+
+
+    /**
+     * relative path for compiled css files, used in asset bundles
+     * @var string
+     */
+    public $sassCompiledPathRelativeDirectory = 'css';
+
 
     /**
      * Force compilation/recompilation on each request.
@@ -91,6 +99,7 @@ class SassHandler extends Component
      *
      * @var boolean
      */
+
     public $forceCompilation = false;
 
     /**
@@ -349,7 +358,6 @@ class SassHandler extends Component
             );
 
         } else {
-            return 1;
             return $this->publishInside(
                 $compiledFile,
                 $insidePublishedDirectory,
@@ -364,10 +372,11 @@ class SassHandler extends Component
      * compile/recompile source file if needed.
      *
      * @param string $sourcePath Path to the source SCSS file
-     * @throws Exception
+     * @param bool $justName
      * @return string
+     * @throws Exception
      */
-    public function getCompiledFile($sourcePath)
+    public function getCompiledFile($sourcePath, $justName = false)
     {
         $cssPath = $this->getCompiledCssFilePath($sourcePath);
         if ($this->isCompilationNeeded($sourcePath)) {
@@ -389,6 +398,11 @@ class SassHandler extends Component
 
             $this->saveParsedFilesInfoToCache($sourcePath);
         }
+        if ($justName)
+        {
+            $cssPath = $this->sassCompiledPathRelativeDirectory. '/' .pathinfo($cssPath,PATHINFO_BASENAME);
+        }
+
         return $cssPath;
     }
 
@@ -867,7 +881,7 @@ class SassHandler extends Component
         $tmpArray = [];
         foreach ($sources as $source)
         {
-            $tmpArray[] =  $this->publishAndGetPath($baseUrl . $source);
+            $tmpArray[] =  $this->getCompiledFile($baseUrl . $source,true);;
         }
         return $tmpArray;
     }

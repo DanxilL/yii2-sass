@@ -21,6 +21,19 @@ or add
 
 to the require section of your `composer.json` file.
 
+Simple configuration to web app with themes
+-----
+```php
+'components' => array(
+    ...
+    'sass'= [
+        // Path to the SassHandler class
+        'class' => '\danxill\sass\SassHandler',
+        // Enable Compass support, defaults to false
+        'enableCompass' => true,
+        'sassCompiledPath' => $basePath.'\websites\\'.$site.'\\css',
+    ];
+```
 Configuration
 -----
 ```php
