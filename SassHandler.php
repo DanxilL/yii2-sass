@@ -19,6 +19,12 @@ use scss_compass;
  */
 class SassHandler extends Component
 {
+
+
+    const PATH_TYPE_FULL = 0;
+    const PATH_TYPE_RELATIVE = 1;
+
+
     /**
      * Path for cache files. Will be used if Yii caching is not enabled.
      * Will be chmod'ed to become writable, see "writableDirectoryPermissions"
@@ -68,11 +74,11 @@ class SassHandler extends Component
      * parameter.
      * Yii aliases can be used.
      *
-     * Defaults to 'application.runtime.sass-compiled'
+     * Defaults to '@web/css-compiled'
      *
      * @var string
      */
-    public $sassCompiledPath = '@web/css';
+    public $sassCompiledPath = '@web/css-compiled';
 
     /**
      * Force compilation/recompilation on each request.
@@ -283,9 +289,6 @@ class SassHandler extends Component
             $hashByName
         );
         return $publishedPath;
-//        echo '<pre>';var_dump($publishedPath);die;
-//        Yii::$app->clientScript->registerCssFile($publishedPath, $media);
-//        yii\web\View::registerCssFile()
     }
 
     /**
@@ -344,7 +347,9 @@ class SassHandler extends Component
                 $compiledFile,
                 is_null($hashByName) ? $this->defaultHashByName : $hashByName
             );
+
         } else {
+            return 1;
             return $this->publishInside(
                 $compiledFile,
                 $insidePublishedDirectory,
@@ -834,5 +839,36 @@ class SassHandler extends Component
     protected function getCacheComponent()
     {
         return   Yii::$app->cache;
+    }
+
+    /**
+     * Publishes the compiled file and returns the path to it.
+     * @param $sourcePath
+     * @param int $type
+     * @return string path to compiled css file
+     * @throws Exception
+     */
+    public function publishAndGetPath($sourcePath, $type = self::PATH_TYPE_RELATIVE)
+    {
+        $path = $this->publish($sourcePath);
+        return $path[$type];
+    }
+
+    /**
+     * Gets a list of scss files, and if necessary compiles them, if  no, return an array of compiled css files
+     * @param $sources
+     * @param $baseUrl
+     * @param int $type
+     * @return array
+     * @throws Exception
+     */
+    public function publishAndGetPathArray($sources,$baseUrl, $type = self::PATH_TYPE_RELATIVE)
+    {
+        $tmpArray = [];
+        foreach ($sources as $source)
+        {
+            $tmpArray[] =  $this->publishAndGetPath($baseUrl . $source);
+        }
+        return $tmpArray;
     }
 }
