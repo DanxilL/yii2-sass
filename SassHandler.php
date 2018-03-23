@@ -4,6 +4,7 @@ namespace danxill\sass;
 use Yii;
 use yii\base\Component;
 use yii\base\Exception;
+use scss_compass;
 
 /**
  * Sass Handler
@@ -71,7 +72,7 @@ class SassHandler extends Component
      *
      * @var string
      */
-    public $sassCompiledPath = '@runtime/sass-compiled';
+    public $sassCompiledPath = '@web/css';
 
     /**
      * Force compilation/recompilation on each request.
@@ -265,6 +266,7 @@ class SassHandler extends Component
      *        See CAssetManager::publish() for details.
      *        "defaultHashByName" plugin parameter's value is used by default.
      * @see CAssetManager::publish()
+     * @return array|string
      * @throws Exception
      */
     public function register(
@@ -280,7 +282,10 @@ class SassHandler extends Component
             $subDirectory,
             $hashByName
         );
-        Yii::$app->clientScript->registerCssFile($publishedPath, $media);
+        return $publishedPath;
+//        echo '<pre>';var_dump($publishedPath);die;
+//        Yii::$app->clientScript->registerCssFile($publishedPath, $media);
+//        yii\web\View::registerCssFile()
     }
 
     /**
@@ -478,7 +483,7 @@ class SassHandler extends Component
             $insidePublishedDirectory
         );
         $targetPath = Yii::$app->assetManager
-            ->getPublishedPath($insidePublishedDirectoryRealPath, $hashByName)
+                ->getPublishedPath($insidePublishedDirectoryRealPath, $hashByName)
             . DIRECTORY_SEPARATOR;
         if (!$targetPath) {
             throw new Exception(
@@ -520,9 +525,9 @@ class SassHandler extends Component
         }
 
         return Yii::$app->assetManager->getPublishedUrl(
-            $insidePublishedDirectoryRealPath,
-            $hashByName
-        ) . '/' . $subDirectoryUrlSection . $basename;
+                $insidePublishedDirectoryRealPath,
+                $hashByName
+            ) . '/' . $subDirectoryUrlSection . $basename;
     }
 
     /**
@@ -534,13 +539,13 @@ class SassHandler extends Component
     {
         $formatters = array(
             self::OUTPUT_FORMATTING_NESTED
-                => 'Leafo\ScssPhp\Formatter\Nested',
+            => 'Leafo\ScssPhp\Formatter\Nested',
             self::OUTPUT_FORMATTING_COMPRESSED
-                => 'Leafo\ScssPhp\Formatter\Compressed',
+            => 'Leafo\ScssPhp\Formatter\Compressed',
             self::OUTPUT_FORMATTING_EXPANDED
-                => 'Leafo\ScssPhp\Formatter\Expanded',
+            => 'Leafo\ScssPhp\Formatter\Expanded',
             self::OUTPUT_FORMATTING_CRUNCHED
-                => 'Leafo\ScssPhp\Formatter\Crunched',
+            => 'Leafo\ScssPhp\Formatter\Crunched',
         );
         if (isset($formatters[$this->compilerOutputFormatting])) {
             $compiler->setFormatter(
@@ -594,7 +599,7 @@ class SassHandler extends Component
         $info = array(
             'compiledFiles' => $parsedFiles,
             'autoAddCurrentDirectoryAsImportPath'
-                => $this->autoAddCurrentDirectoryAsImportPath,
+            => $this->autoAddCurrentDirectoryAsImportPath,
             'enableCompass' => $this->enableCompass,
             'importPaths' => $this->compiler->getImportPaths(),
             'compilerOutputFormatting' => $this->compilerOutputFormatting,
@@ -824,10 +829,10 @@ class SassHandler extends Component
     }
 
     /**
-     * @return array|null Yii caching component
+     * @return \yii\caching\CacheInterface Yii caching component
      */
     protected function getCacheComponent()
     {
-        return $this->cacheComponentId ? Yii::$app->getComponents($this->cacheComponentId) : null;
+        return   Yii::$app->cache;
     }
 }
