@@ -32,7 +32,8 @@ Configuration
                // Enable Compass support, defaults to false
                'enableCompass' => true,
                
-                'cachePath' => 'application.runtime.sass-cache',                       
+               //By default it is '@runtime/sass-cache'
+                'cachePath' => '@runtime/sass-cache',                       
                
                
                // Path to a directory with compiled CSS files.
