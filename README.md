@@ -109,7 +109,6 @@ Usage
 
 
 Once the extension is installed, simply use it in your code by  :
-I'll update later
 ```php
 namespace app\assets;
 
