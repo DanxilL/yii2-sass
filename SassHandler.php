@@ -14,8 +14,8 @@ use scss_compass;
  *
  * @property ExtendedScssc $compiler
  *
- * @author Artem Frolov <artem@frolov.net>
- * @link https://github.com/artem-frolov/yii-sass
+ * @author Dmitriy Bulgar <danxills@gmail.com>
+ * @link https://github.com/DanxilL/yii2-sass
  */
 class SassHandler extends Component
 {
